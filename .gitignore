@@ -36,3 +36,4 @@ plan*
 *.beam
 /config/*.secret.exs
 .elixir_ls/
+/specs

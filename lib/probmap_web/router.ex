@@ -7,6 +7,12 @@ defmodule ProbMapWeb.Router do
 
   scope "/api", ProbMapWeb do
     pipe_through :api
+
+    get "/problem/criteria", ProblemController, :criteria
+    get "/problem", ProblemController, :index
+    post "/problem", ProblemController, :create
+    put "/problem", ProblemController, :update
+    delete "/problem", ProblemController, :delete
   end
 
   # Enable LiveDashboard in development
