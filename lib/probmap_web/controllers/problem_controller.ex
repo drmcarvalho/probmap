@@ -1,6 +1,7 @@
 defmodule ProbMapWeb.ProblemController do
   use ProbMapWeb, :controller
 
+  @spec criteria(Plug.Conn.t(), nil | maybe_improper_list() | map()) :: Plug.Conn.t()
   def criteria(conn, params) do
     search_term = params["q"]
     problems = ProbMap.Problems.search_problems(search_term)
@@ -17,6 +18,7 @@ defmodule ProbMapWeb.ProblemController do
     json(conn, result)
   end
 
+  @spec show(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def show(conn, %{"id" => id}) do
     case Integer.parse(id) do
       {int_id, ""} when int_id > 0 ->
@@ -39,7 +41,7 @@ defmodule ProbMapWeb.ProblemController do
         |> put_status(:bad_request)
         |> json(%{error: "id must be a positive integer"})
     end
-end
+  end
 
   def create(conn, params) do
     description = params["description"]
