@@ -13,6 +13,18 @@ defmodule ProbMap.Problems do
     Repo.all(Problem)
   end
 
+  def search_problems(search_term) do
+    query =
+      if search_term && String.trim(search_term) != "" do
+        wildcard = "%#{search_term}%"
+        from(p in Problem, where: like(p.description, ^wildcard))
+      else
+        from(p in Problem)
+      end
+
+    Repo.all(query)
+  end
+
   def get_problem(id) do
     Repo.get(Problem, id)
   end

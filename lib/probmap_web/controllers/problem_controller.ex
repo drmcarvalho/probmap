@@ -5,8 +5,20 @@ defmodule ProbMapWeb.ProblemController do
     json(conn, %{method: "GET", action: "/api/problem"})
   end
 
-  def criteria(conn, _params) do
-    json(conn, %{method: "GET", action: "/api/problem/criteria"})
+  def criteria(conn, params) do
+    search_term = params["q"]
+    problems = ProbMap.Problems.search_problems(search_term)
+
+    result =
+      Enum.map(problems, fn problem ->
+        %{
+          problemId: problem.id,
+          description: problem.description,
+          type: Atom.to_string(problem.type)
+        }
+      end)
+
+    json(conn, result)
   end
 
   def create(conn, params) do
