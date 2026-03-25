@@ -62,4 +62,19 @@ defmodule ProbMap.CoreLogic do
   def to_classification(:np_complete), do: {:intermediate, :np_complete}
   def to_classification(:human_solvable), do: {:intermediate, :human_solvable}
   def to_classification(:biosolvable), do: {:intermediate, :biosolvable}
+
+  @doc """
+  Converts a classification value to a list of strings for JSON serialization.
+
+  ## Examples
+
+      iex> ProbMap.CoreLogic.classification_to_list(:undecidable)
+      ["undecidable"]
+
+      iex> ProbMap.CoreLogic.classification_to_list({:intermediate, :np_complete})
+      ["intermediate", "np_complete"]
+  """
+  @spec classification_to_list(atom() | {atom(), atom()}) :: [String.t()]
+  def classification_to_list(atom) when is_atom(atom), do: [Atom.to_string(atom)]
+  def classification_to_list({a, b}), do: [Atom.to_string(a), Atom.to_string(b)]
 end

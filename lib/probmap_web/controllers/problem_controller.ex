@@ -84,19 +84,24 @@ defmodule ProbMapWeb.ProblemController do
   def types(conn, _params) do
     json(conn, [
       %{
-        type: ProbMap.CoreLogic.classify(:undecidable)
+        type_description: ProbMap.CoreLogic.classify(:undecidable),
+        types: ProbMap.CoreLogic.classification_to_list(ProbMap.CoreLogic.to_classification(:undecidable))
       },
       %{
-        type: ProbMap.CoreLogic.classify(:algorithmic)
+        type_description: ProbMap.CoreLogic.classify(:algorithmic),
+        types: ProbMap.CoreLogic.classification_to_list(ProbMap.CoreLogic.to_classification(:algorithmic))
       },
       %{
-        type: ProbMap.CoreLogic.classify(:np_complete)
+        type_description: ProbMap.CoreLogic.classify(:np_complete),
+        types: ProbMap.CoreLogic.classification_to_list(ProbMap.CoreLogic.to_classification(:np_complete))
       },
       %{
-        type: ProbMap.CoreLogic.classify(:human_solvable)
+        type_description: ProbMap.CoreLogic.classify(:human_solvable),
+        types: ProbMap.CoreLogic.classification_to_list(ProbMap.CoreLogic.to_classification(:human_solvable))
       },
       %{
-        type: ProbMap.CoreLogic.classify(:biosolvable)
+        type_description: ProbMap.CoreLogic.classify(:biosolvable),
+        types: ProbMap.CoreLogic.classification_to_list(ProbMap.CoreLogic.to_classification(:biosolvable))
       }
     ])
   end
