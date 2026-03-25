@@ -10,6 +10,7 @@ defmodule ProbMapWeb.Router do
 
     get "/problem/criteria", ProblemController, :criteria
     get "/problem/:id", ProblemController, :show
+    get "/types", ProblemController, :types
     post "/problem", ProblemController, :create
     put "/problem", ProblemController, :update
     delete "/problem", ProblemController, :delete

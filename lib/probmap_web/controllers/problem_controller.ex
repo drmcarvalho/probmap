@@ -80,6 +80,27 @@ defmodule ProbMapWeb.ProblemController do
     end
   end
 
+  @spec types(Plug.Conn.t(), any()) :: Plug.Conn.t()
+  def types(conn, _params) do
+    json(conn, [
+      %{
+        type: ProbMap.CoreLogic.classify(:undecidable)
+      },
+      %{
+        type: ProbMap.CoreLogic.classify(:algorithmic)
+      },
+      %{
+        type: ProbMap.CoreLogic.classify(:np_complete)
+      },
+      %{
+        type: ProbMap.CoreLogic.classify(:human_solvable)
+      },
+      %{
+        type: ProbMap.CoreLogic.classify(:biosolvable)
+      }
+    ])
+  end
+
   defp format_changeset_errors(changeset) do
     Ecto.Changeset.traverse_errors(changeset, fn {msg, opts} ->
       Regex.replace(~r"%{(\w+)}", msg, fn _, key ->
