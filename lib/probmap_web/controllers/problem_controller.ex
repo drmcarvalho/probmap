@@ -5,7 +5,6 @@ defmodule ProbMapWeb.ProblemController do
   def criteria(conn, params) do
     search_term = params["q"]
     problems = ProbMap.Problems.search_problems(search_term)
-
     result =
       Enum.map(problems, fn problem ->
         %{
@@ -14,7 +13,6 @@ defmodule ProbMapWeb.ProblemController do
           type: Atom.to_string(problem.type)
         }
       end)
-
     json(conn, result)
   end
 
@@ -53,12 +51,10 @@ defmodule ProbMapWeb.ProblemController do
         conn
         |> put_status(:bad_request)
         |> json(%{error: "description is required"})
-
       ProbMap.CoreLogic.blank?(type) ->
         conn
         |> put_status(:bad_request)
         |> json(%{error: "type is required"})
-
       true ->
         case ProbMap.Problems.create_problem(%{"description" => description, "type" => type}) do
           {:ok, problem} ->
@@ -81,7 +77,7 @@ defmodule ProbMapWeb.ProblemController do
   end
 
   @spec types(Plug.Conn.t(), any()) :: Plug.Conn.t()
-  def types(conn, _params) do
+  def types(conn, _) do
     json(conn, [
       %{
         type_description: ProbMap.CoreLogic.classify(:undecidable),
