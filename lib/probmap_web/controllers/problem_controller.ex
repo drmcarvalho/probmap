@@ -43,6 +43,7 @@ defmodule ProbMapWeb.ProblemController do
     end
   end
 
+  @spec create(Plug.Conn.t(), nil | maybe_improper_list() | map()) :: Plug.Conn.t()
   def create(conn, params) do
     description = params["description"]
     type = params["type"]
@@ -87,10 +88,12 @@ defmodule ProbMapWeb.ProblemController do
     end)
   end
 
+  @spec update(Plug.Conn.t(), any()) :: Plug.Conn.t()
   def update(conn, _params) do
     json(conn, %{method: "PUT", action: "/api/problem"})
   end
 
+  @spec delete(Plug.Conn.t(), any()) :: Plug.Conn.t()
   def delete(conn, _params) do
     json(conn, %{method: "DELETE", action: "/api/problem"})
   end
