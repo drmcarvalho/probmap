@@ -1,10 +1,6 @@
 defmodule ProbMapWeb.ProblemController do
   use ProbMapWeb, :controller
 
-  def index(conn, _params) do
-    json(conn, %{method: "GET", action: "/api/problem"})
-  end
-
   def criteria(conn, params) do
     search_term = params["q"]
     problems = ProbMap.Problems.search_problems(search_term)
@@ -20,6 +16,30 @@ defmodule ProbMapWeb.ProblemController do
 
     json(conn, result)
   end
+
+  def show(conn, %{"id" => id}) do
+    case Integer.parse(id) do
+      {int_id, ""} when int_id > 0 ->
+        case ProbMap.Problems.get_problem(int_id) do
+          nil ->
+            conn
+            |> put_status(:not_found)
+            |> json(%{error: "Problem not found"})
+
+          problem ->
+            conn
+            |> json(%{
+              problemId: problem.id,
+              description: problem.description,
+              type: to_string(problem.type)
+            })
+        end
+      _ ->
+        conn
+        |> put_status(:bad_request)
+        |> json(%{error: "id must be a positive integer"})
+    end
+end
 
   def create(conn, params) do
     description = params["description"]

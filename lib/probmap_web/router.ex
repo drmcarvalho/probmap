@@ -9,7 +9,7 @@ defmodule ProbMapWeb.Router do
     pipe_through :api
 
     get "/problem/criteria", ProblemController, :criteria
-    get "/problem", ProblemController, :index
+    get "/problem/:id", ProblemController, :show
     post "/problem", ProblemController, :create
     put "/problem", ProblemController, :update
     delete "/problem", ProblemController, :delete
