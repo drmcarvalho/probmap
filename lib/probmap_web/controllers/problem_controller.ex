@@ -81,23 +81,23 @@ defmodule ProbMapWeb.ProblemController do
     json(conn, [
       %{
         type_description: ProbMap.CoreLogic.classify(:undecidable),
-        types: ProbMap.CoreLogic.classification_to_list(ProbMap.CoreLogic.to_classification(:undecidable))
+        types: ProbMap.CoreLogic.to_classification(:undecidable) |> ProbMap.CoreLogic.classification_to_list()
       },
       %{
         type_description: ProbMap.CoreLogic.classify(:algorithmic),
-        types: ProbMap.CoreLogic.classification_to_list(ProbMap.CoreLogic.to_classification(:algorithmic))
+        types: ProbMap.CoreLogic.to_classification(:algorithmic) |> ProbMap.CoreLogic.classification_to_list()
       },
       %{
         type_description: ProbMap.CoreLogic.classify(:np_complete),
-        types: ProbMap.CoreLogic.classification_to_list(ProbMap.CoreLogic.to_classification(:np_complete))
+        types: ProbMap.CoreLogic.to_classification(:np_complete) |> ProbMap.CoreLogic.classification_to_list()
       },
       %{
         type_description: ProbMap.CoreLogic.classify(:human_solvable),
-        types: ProbMap.CoreLogic.classification_to_list(ProbMap.CoreLogic.to_classification(:human_solvable))
+        types: ProbMap.CoreLogic.to_classification(:human_solvable) |> ProbMap.CoreLogic.classification_to_list()
       },
       %{
         type_description: ProbMap.CoreLogic.classify(:biosolvable),
-        types: ProbMap.CoreLogic.classification_to_list(ProbMap.CoreLogic.to_classification(:biosolvable))
+        types: ProbMap.CoreLogic.to_classification(:biosolvable) |> ProbMap.CoreLogic.classification_to_list()
       }
     ])
   end

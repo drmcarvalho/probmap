@@ -17,8 +17,10 @@ defmodule ProbMapWeb do
   those modules here.
   """
 
+  @spec static_paths() :: [<<_::40, _::_*8>>, ...]
   def static_paths, do: ~w(assets fonts images favicon.ico robots.txt)
 
+  @spec router() :: {:__block__, [], [{:import, [...], [...]} | {:use, [...], [...]}, ...]}
   def router do
     quote do
       use Phoenix.Router, helpers: false
@@ -29,6 +31,9 @@ defmodule ProbMapWeb do
     end
   end
 
+  @spec channel() ::
+          {:use, [{:context, ProbMapWeb} | {:end_of_expression, [...]} | {:imports, [...]}, ...],
+           [{:__aliases__, [...], [...]}, ...]}
   def channel do
     quote do
       use Phoenix.Channel
@@ -47,6 +52,9 @@ defmodule ProbMapWeb do
     end
   end
 
+  @spec verified_routes() ::
+          {:use, [{:context, ProbMapWeb} | {:end_of_expression, [...]} | {:imports, [...]}, ...],
+           [[{any(), any()}, ...] | {:__aliases__, [...], [...]}, ...]}
   def verified_routes do
     quote do
       use Phoenix.VerifiedRoutes,
@@ -56,6 +64,7 @@ defmodule ProbMapWeb do
     end
   end
 
+  @spec __using__(atom()) :: any()
   @doc """
   When used, dispatch to the appropriate controller/live_view/etc.
   """
