@@ -47,6 +47,26 @@ defmodule ProbMap.ProblemsContext do
     |> Repo.insert()
   end
 
+  def create_problem_with_inputs(problem_attrs, inputs) do
+    Ecto.Multi.new()
+    |> Ecto.Multi.insert(:problem, Problem.changeset(%Problem{}, problem_attrs))
+    |> Ecto.Multi.run(:data_of_problems, fn repo, %{problem: problem} ->
+      results =
+        Enum.map(inputs, fn input ->
+          problem
+          |> Ecto.build_assoc(:data_of_problems)
+          |> DataOfProblem.changeset(input)
+          |> repo.insert()
+        end)
+
+      case Enum.find(results, &match?({:error, _}, &1)) do
+        nil -> {:ok, Enum.map(results, fn {:ok, d} -> d end)}
+        {:error, changeset} -> {:error, changeset}
+      end
+    end)
+    |> Repo.transaction()
+  end
+
   def update_problem(%Problem{} = problem, attrs) do
     problem
     |> Problem.changeset(attrs)

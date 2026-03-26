@@ -55,21 +55,61 @@ defmodule ProbMapWeb.ProblemController do
         |> put_status(:bad_request)
         |> json(%{error: "type is required"})
       true ->
-        case ProbMap.ProblemsContext.create_problem(%{"description" => description, "type" => type}) do
-          {:ok, problem} ->
-            conn
-            |> put_status(:created)
-            |> json(%{
-              id: problem.id,
-              description: problem.description,
-              type: problem.type,
-              inserted_at: problem.inserted_at,
-              updated_at: problem.updated_at
-            })
-          {:error, changeset} ->
-            conn
-            |> put_status(:bad_request)
-            |> json(%{error: "invalid data", details: format_changeset_errors(changeset)})
+        inputs = params["inputs"]
+        cond do
+          is_list(inputs) and inputs != [] ->
+            invalid_input =
+              Enum.find_index(inputs, fn input ->
+                ProbMap.CoreLogic.blank?(input["data"])
+              end)
+            if invalid_input do
+              conn
+              |> put_status(:bad_request)
+              |> json(%{error: "input data is required at index #{invalid_input}"})
+            else
+              case ProbMap.ProblemsContext.create_problem_with_inputs(
+                     %{"description" => description, "type" => type},
+                     inputs
+                   ) do
+                {:ok, %{problem: problem}} ->
+                  conn
+                  |> put_status(:created)
+                  |> json(%{
+                    id: problem.id,
+                    description: problem.description,
+                    type: problem.type,
+                    inserted_at: problem.inserted_at,
+                    updated_at: problem.updated_at
+                  })
+
+                {:error, :problem, changeset, _} ->
+                  conn
+                  |> put_status(:bad_request)
+                  |> json(%{error: "invalid data", details: format_changeset_errors(changeset)})
+
+                {:error, :data_of_problems, changeset, _} ->
+                  conn
+                  |> put_status(:bad_request)
+                  |> json(%{error: "invalid input data", details: format_changeset_errors(changeset)})
+              end
+            end
+          true ->
+            case ProbMap.ProblemsContext.create_problem(%{"description" => description, "type" => type}) do
+              {:ok, problem} ->
+                conn
+                |> put_status(:created)
+                |> json(%{
+                  id: problem.id,
+                  description: problem.description,
+                  type: problem.type,
+                  inserted_at: problem.inserted_at,
+                  updated_at: problem.updated_at
+                })
+              {:error, changeset} ->
+                conn
+                |> put_status(:bad_request)
+                |> json(%{error: "invalid data", details: format_changeset_errors(changeset)})
+            end
         end
     end
   end
