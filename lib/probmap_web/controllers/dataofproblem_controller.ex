@@ -46,7 +46,8 @@ defmodule ProbMapWeb.DataOfProblemController do
               problem ->
                 case ProbMap.ProblemsContext.create_data_of_problem(problem, %{"data" => data}) do
                   {:ok, _} ->
-                    send_resp(conn, :created, "")
+                    conn
+                    |> send_resp(:created, "")
                   {:error, _} ->
                     conn
                     |> put_status(:bad_request)
