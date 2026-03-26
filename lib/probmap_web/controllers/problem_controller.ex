@@ -89,7 +89,6 @@ defmodule ProbMapWeb.ProblemController do
                   conn
                   |> put_status(:bad_request)
                   |> json(%{error: "invalid data", details: format_changeset_errors(changeset)})
-
                 {:error, :data_of_problems, changeset, _} ->
                   conn
                   |> put_status(:bad_request)
