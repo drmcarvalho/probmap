@@ -157,8 +157,29 @@ defmodule ProbMapWeb.ProblemController do
     end
   end
 
-  @spec delete(Plug.Conn.t(), any()) :: Plug.Conn.t()
-  def delete(conn, _params) do
-    json(conn, %{method: "DELETE", action: "/api/problem"})
+  @spec delete(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def delete(conn, %{"id" => id}) do
+    case Integer.parse(id) do
+      {int_id, ""} when int_id > 0 ->
+        case ProbMap.ProblemsContext.get_problem(int_id) do
+          nil ->
+            conn
+            |> put_status(:not_found)
+            |> json(%{error: "Problem not found"})
+          problem ->
+            case ProbMap.ProblemsContext.delete_problem(problem) do
+              {:ok, _deleted} ->
+                send_resp(conn, :no_content, "")
+              {:error, changeset} ->
+                conn
+                |> put_status(:bad_request)
+                |> json(%{error: "failed to delete", details: format_changeset_errors(changeset)})
+            end
+        end
+      _ ->
+        conn
+        |> put_status(:bad_request)
+        |> json(%{error: "id must be a positive integer"})
+    end
   end
 end
