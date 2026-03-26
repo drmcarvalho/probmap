@@ -7,8 +7,7 @@ defmodule ProbMapWeb.DataOfProblemController do
         search_term = params["q"]
         result =
           ProbMap.ProblemsContext.search_data_of_problems(int_id, search_term)
-          |> Enum.map(fn d ->
-            %{
+          |> Enum.map(fn d -> %{
               data: d.data,
               dataId: d.id,
               problemId: d.problem_id
