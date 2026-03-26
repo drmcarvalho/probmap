@@ -105,6 +105,17 @@ defmodule ProbMap.ProblemsContext do
     |> Repo.insert()
   end
 
+  @spec get_data_of_problem(any()) :: any()
+  def get_data_of_problem(id) do
+    Repo.get(DataOfProblem, id)
+  end
+
+  def update_data_of_problem(%DataOfProblem{} = data_of_problem, attrs) do
+    data_of_problem
+    |> DataOfProblem.changeset(attrs)
+    |> Repo.update()
+  end
+
   # --- ResultTransform ---
 
   def list_result_transforms(problem_id) do
