@@ -13,6 +13,10 @@ An application that uses the problem definition approach by Professor Jorge Muni
 
 Reference: [Teoria dos Problemas – Wikipedia (PT)](https://pt.wikipedia.org/wiki/Teoria_dos_problemas)
 
+# Motivation
+
+This project in Elixir is an homage to a specific individual, since I have trouble in synthesizing abstract ideas and thinking about problems in my mind, until I found an article on Wikipedia many years ago about this Problem Theory (unsure if it has been mathematically proven) and the formula has helped me a lot since then.
+
 ## Usage / Getting Started
 
 ### Prerequisites
