@@ -120,7 +120,7 @@ defmodule ProbMapWeb.ProblemController do
 
   @spec types(Plug.Conn.t(), any()) :: Plug.Conn.t()
   def types(conn, _) do
-    json(conn, [
+    conn |> json([
       %{
         type_description: ProbMap.CoreLogic.classify(:undecidable),
         types:
