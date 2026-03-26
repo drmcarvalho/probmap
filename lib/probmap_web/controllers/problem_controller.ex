@@ -4,9 +4,8 @@ defmodule ProbMapWeb.ProblemController do
   @spec criteria(Plug.Conn.t(), nil | maybe_improper_list() | map()) :: Plug.Conn.t()
   def criteria(conn, params) do
     search_term = params["q"]
-    problems = ProbMap.ProblemsContext.search_problems(search_term)
-    result =
-      Enum.map(problems, fn problem -> %{
+    result = ProbMap.ProblemsContext.search_problems(search_term)
+      |> Enum.map(fn problem -> %{
           problemId: problem.id,
           description: problem.description,
           type: Atom.to_string(problem.type),
