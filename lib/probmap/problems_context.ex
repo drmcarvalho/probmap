@@ -85,6 +85,16 @@ defmodule ProbMap.ProblemsContext do
     |> Repo.all()
   end
 
+  def search_data_of_problems(problem_id, search_term) do
+    if ProbMap.CoreLogic.blank?(search_term) do
+      list_data_of_problems(problem_id)
+    else
+      wildcard = "%#{search_term}%"
+      from(d in DataOfProblem, where: d.problem_id == ^problem_id and like(d.data, ^wildcard))
+      |> Repo.all()
+    end
+  end
+
   def create_data_of_problem(%Problem{} = problem, attrs \\ %{}) do
     problem
     |> Ecto.build_assoc(:data_of_problems)
