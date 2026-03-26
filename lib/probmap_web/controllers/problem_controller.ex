@@ -13,7 +13,7 @@ defmodule ProbMapWeb.ProblemController do
           updated_at: problem.updated_at
         }
       end)
-    json(conn, result)
+    conn |> json(result)
   end
 
   @spec show(Plug.Conn.t(), map()) :: Plug.Conn.t()
