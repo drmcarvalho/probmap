@@ -118,9 +118,43 @@ defmodule ProbMapWeb.ProblemController do
     end)
   end
 
-  @spec update(Plug.Conn.t(), any()) :: Plug.Conn.t()
-  def update(conn, _params) do
-    json(conn, %{method: "PUT", action: "/api/problem"})
+  @spec update(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def update(conn, %{"id" => id} = params) do
+    description = params["description"]
+    type = params["type"]
+    cond do
+      ProbMap.CoreLogic.blank?(description) ->
+        conn
+        |> put_status(:bad_request)
+        |> json(%{error: "description is required"})
+      ProbMap.CoreLogic.blank?(type) ->
+        conn
+        |> put_status(:bad_request)
+        |> json(%{error: "type is required"})
+      true ->
+        case Integer.parse(id) do
+          {int_id, ""} when int_id > 0 ->
+            case ProbMap.Problems.get_problem(int_id) do
+              nil ->
+                conn
+                |> put_status(:not_found)
+                |> json(%{error: "Problem not found"})
+              problem ->
+                case ProbMap.Problems.update_problem(problem, %{"description" => description, "type" => type}) do
+                  {:ok, _updated} ->
+                    send_resp(conn, :no_content, "")
+                  {:error, changeset} ->
+                    conn
+                    |> put_status(:bad_request)
+                    |> json(%{error: "invalid data", details: format_changeset_errors(changeset)})
+                end
+            end
+          _ ->
+            conn
+            |> put_status(:bad_request)
+            |> json(%{error: "id must be a positive integer"})
+        end
+    end
   end
 
   @spec delete(Plug.Conn.t(), any()) :: Plug.Conn.t()
