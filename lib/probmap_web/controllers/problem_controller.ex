@@ -85,7 +85,6 @@ defmodule ProbMapWeb.ProblemController do
                     inserted_at: problem.inserted_at,
                     updated_at: problem.updated_at
                   })
-
                 {:error, :problem, changeset, _} ->
                   conn
                   |> put_status(:bad_request)
