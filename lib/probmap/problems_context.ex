@@ -47,6 +47,10 @@ defmodule ProbMap.ProblemsContext do
     |> Repo.insert()
   end
 
+  @spec create_problem_with_inputs(
+          :invalid | %{optional(:__struct__) => none(), optional(atom() | binary()) => any()},
+          any()
+        ) :: any()
   def create_problem_with_inputs(problem_attrs, inputs) do
     Ecto.Multi.new()
     |> Ecto.Multi.insert(:problem, Problem.changeset(%Problem{}, problem_attrs))
