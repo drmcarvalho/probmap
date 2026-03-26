@@ -1,6 +1,7 @@
 defmodule ProbMapWeb.DataOfProblemController do
   use ProbMapWeb, :controller
 
+  @spec criteria(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def criteria(conn, %{"id" => id} = params) do
     case Integer.parse(id) do
       {int_id, ""} when int_id > 0 ->
