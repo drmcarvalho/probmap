@@ -1,12 +1,12 @@
-defmodule ProbMap.Problems.DataOfProblem do
+defmodule ProbMap.ProblemsContext.DataOfProblem do
   use Ecto.Schema
   import Ecto.Changeset
 
   schema "data_of_problems" do
     field :data, :string
 
-    belongs_to :problem, ProbMap.Problems.Problem
-    has_many :binary_relationships, ProbMap.Problems.BinaryRelationship
+    belongs_to :problem, ProbMap.ProblemsContext.Problem
+    has_many :binary_relationships, ProbMap.ProblemsContext.BinaryRelationship
 
     timestamps(type: :utc_datetime)
   end

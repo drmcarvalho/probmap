@@ -1,12 +1,12 @@
-defmodule ProbMap.Problems.BinaryRelationship do
+defmodule ProbMap.ProblemsContext.BinaryRelationship do
   use Ecto.Schema
   import Ecto.Changeset
 
   schema "binary_relationships" do
     field :bit, :boolean, default: false
 
-    belongs_to :data_of_problem, ProbMap.Problems.DataOfProblem
-    belongs_to :result_transform, ProbMap.Problems.ResultTransform
+    belongs_to :data_of_problem, ProbMap.ProblemsContext.DataOfProblem
+    belongs_to :result_transform, ProbMap.ProblemsContext.ResultTransform
 
     timestamps(type: :utc_datetime)
   end

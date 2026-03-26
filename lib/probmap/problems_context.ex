@@ -1,18 +1,20 @@
-defmodule ProbMap.Problems do
+defmodule ProbMap.ProblemsContext do
   @moduledoc """
   Contexto para operações com Problems e entidades relacionadas.
   """
 
   import Ecto.Query
   alias ProbMap.Repo
-  alias ProbMap.Problems.{Problem, DataOfProblem, ResultTransform, BinaryRelationship}
+  alias ProbMap.ProblemsContext.{Problem, DataOfProblem, ResultTransform, BinaryRelationship}
 
   # --- Problem ---
 
+  @spec list_problems() :: any()
   def list_problems do
     Repo.all(Problem)
   end
 
+  @spec search_problems(false | nil | binary()) :: any()
   def search_problems(search_term) do
     query =
       if search_term && String.trim(search_term) != "" do
@@ -25,14 +27,20 @@ defmodule ProbMap.Problems do
     Repo.all(query)
   end
 
+  @spec get_problem(any()) :: any()
   def get_problem(id) do
     Repo.get(Problem, id)
   end
 
+  @spec get_problem!(any()) :: any()
   def get_problem!(id) do
     Repo.get!(Problem, id)
   end
 
+  @spec create_problem(
+          :invalid
+          | %{optional(:__struct__) => none(), optional(atom() | binary()) => any()}
+        ) :: any()
   def create_problem(attrs \\ %{}) do
     %Problem{}
     |> Problem.changeset(attrs)
@@ -51,6 +59,7 @@ defmodule ProbMap.Problems do
 
   # --- DataOfProblem ---
 
+  @spec list_data_of_problems(any()) :: any()
   def list_data_of_problems(problem_id) do
     from(d in DataOfProblem, where: d.problem_id == ^problem_id)
     |> Repo.all()

@@ -1,4 +1,4 @@
-defmodule ProbMap.Problems.Problem do
+defmodule ProbMap.ProblemsContext.Problem do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -8,8 +8,8 @@ defmodule ProbMap.Problems.Problem do
     field :type, Ecto.Enum,
       values: [:undecidable, :algorithmic, :np_complete, :human_solvable, :biosolvable]
 
-    has_many :data_of_problems, ProbMap.Problems.DataOfProblem
-    has_many :result_transforms, ProbMap.Problems.ResultTransform
+    has_many :data_of_problems, ProbMap.ProblemsContext.DataOfProblem
+    has_many :result_transforms, ProbMap.ProblemsContext.ResultTransform
 
     timestamps(type: :utc_datetime)
   end

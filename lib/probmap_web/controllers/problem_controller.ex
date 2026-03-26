@@ -4,7 +4,7 @@ defmodule ProbMapWeb.ProblemController do
   @spec criteria(Plug.Conn.t(), nil | maybe_improper_list() | map()) :: Plug.Conn.t()
   def criteria(conn, params) do
     search_term = params["q"]
-    problems = ProbMap.Problems.search_problems(search_term)
+    problems = ProbMap.ProblemsContext.search_problems(search_term)
     result =
       Enum.map(problems, fn problem -> %{
           problemId: problem.id,
@@ -21,7 +21,7 @@ defmodule ProbMapWeb.ProblemController do
   def show(conn, %{"id" => id}) do
     case Integer.parse(id) do
       {int_id, ""} when int_id > 0 ->
-        case ProbMap.Problems.get_problem(int_id) do
+        case ProbMap.ProblemsContext.get_problem(int_id) do
           nil ->
             conn
             |> put_status(:not_found)
@@ -55,7 +55,7 @@ defmodule ProbMapWeb.ProblemController do
         |> put_status(:bad_request)
         |> json(%{error: "type is required"})
       true ->
-        case ProbMap.Problems.create_problem(%{"description" => description, "type" => type}) do
+        case ProbMap.ProblemsContext.create_problem(%{"description" => description, "type" => type}) do
           {:ok, problem} ->
             conn
             |> put_status(:created)
@@ -134,13 +134,13 @@ defmodule ProbMapWeb.ProblemController do
       true ->
         case Integer.parse(id) do
           {int_id, ""} when int_id > 0 ->
-            case ProbMap.Problems.get_problem(int_id) do
+            case ProbMap.ProblemsContext.get_problem(int_id) do
               nil ->
                 conn
                 |> put_status(:not_found)
                 |> json(%{error: "Problem not found"})
               problem ->
-                case ProbMap.Problems.update_problem(problem, %{"description" => description, "type" => type}) do
+                case ProbMap.ProblemsContext.update_problem(problem, %{"description" => description, "type" => type}) do
                   {:ok, _updated} ->
                     send_resp(conn, :no_content, "")
                   {:error, changeset} ->
