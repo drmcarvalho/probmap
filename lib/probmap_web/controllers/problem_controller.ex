@@ -6,11 +6,12 @@ defmodule ProbMapWeb.ProblemController do
     search_term = params["q"]
     problems = ProbMap.Problems.search_problems(search_term)
     result =
-      Enum.map(problems, fn problem ->
-        %{
+      Enum.map(problems, fn problem -> %{
           problemId: problem.id,
           description: problem.description,
-          type: Atom.to_string(problem.type)
+          type: Atom.to_string(problem.type),
+          inserted_at: problem.inserted_at,
+          updated_at: problem.updated_at
         }
       end)
     json(conn, result)
@@ -25,7 +26,6 @@ defmodule ProbMapWeb.ProblemController do
             conn
             |> put_status(:not_found)
             |> json(%{error: "Problem not found"})
-
           problem ->
             conn
             |> json(%{
@@ -67,7 +67,6 @@ defmodule ProbMapWeb.ProblemController do
               inserted_at: problem.inserted_at,
               updated_at: problem.updated_at
             })
-
           {:error, changeset} ->
             conn
             |> put_status(:bad_request)
