@@ -58,7 +58,6 @@ defmodule ProbMap.ProblemsContext do
           |> DataOfProblem.changeset(input)
           |> repo.insert()
         end)
-
       case Enum.find(results, &match?({:error, _}, &1)) do
         nil -> {:ok, Enum.map(results, fn {:ok, d} -> d end)}
         {:error, changeset} -> {:error, changeset}
