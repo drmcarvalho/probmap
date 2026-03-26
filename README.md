@@ -18,6 +18,7 @@ Reference: [Teoria dos Problemas – Wikipedia (PT)](https://pt.wikipedia.org/wi
 ### Prerequisites
 
 - [Elixir](https://elixir-lang.org/install.html) >= 1.17.3
+- [Phoenix Framework](https://www.phoenixframework.org/) >= v1.8.5
 
 ### Setup
 
