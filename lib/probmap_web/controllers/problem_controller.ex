@@ -45,7 +45,13 @@ defmodule ProbMapWeb.ProblemController do
   def create(conn, params) do
     description = params["description"]
     type = params["type"]
+    inputs = params["inputs"]
+    unknown_keys = Map.keys(params) -- ["description", "type", "inputs"]
     cond do
+      unknown_keys != [] ->
+        conn
+        |> put_status(:bad_request)
+        |> json(%{error: "unknown parameter: #{Enum.join(unknown_keys, ", ")}"})
       ProbMap.CoreLogic.blank?(description) ->
         conn
         |> put_status(:bad_request)
@@ -55,7 +61,6 @@ defmodule ProbMapWeb.ProblemController do
         |> put_status(:bad_request)
         |> json(%{error: "type is required"})
       true ->
-        inputs = params["inputs"]
         cond do
           is_list(inputs) and inputs != [] ->
             invalid_input =
