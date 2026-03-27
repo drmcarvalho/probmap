@@ -116,6 +116,10 @@ defmodule ProbMap.ProblemsContext do
     |> Repo.update()
   end
 
+  def delete_data_of_problem(%DataOfProblem{} = data_of_problem) do
+    Repo.delete(data_of_problem)
+  end
+
   # --- ResultTransform ---
 
   def list_result_transforms(problem_id) do

@@ -17,6 +17,7 @@ defmodule ProbMapWeb.Router do
     get "/problem/:id/data/criteria", DataOfProblemController, :criteria
     post "/problem/:id/data", DataOfProblemController, :create
     put "/problem/:id/data/:dataid", DataOfProblemController, :update
+    delete "/problem/:id/data/:dataid", DataOfProblemController, :delete
   end
 
   # Enable LiveDashboard in development

@@ -108,4 +108,39 @@ defmodule ProbMapWeb.DataOfProblemController do
         |> json(%{error: "id must be a positive integer"})
     end
   end
+
+  @spec delete(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def delete(conn, %{"id" => id, "dataid" => dataid}) do
+    with {int_id, ""} when int_id > 0 <- Integer.parse(id),
+         {int_dataid, ""} when int_dataid > 0 <- Integer.parse(dataid) do
+      case ProbMap.ProblemsContext.get_problem(int_id) do
+        nil ->
+          conn
+          |> put_status(:not_found)
+          |> json(%{error: "Problem not found"})
+        _problem ->
+          case ProbMap.ProblemsContext.get_data_of_problem(int_dataid) do
+            nil ->
+              conn
+              |> put_status(:not_found)
+              |> json(%{error: "Data of Problem not found"})
+            data_of_problem ->
+              case ProbMap.ProblemsContext.delete_data_of_problem(data_of_problem) do
+                {:ok, _deleted} ->
+                  send_resp(conn, :no_content, "")
+                {:error, _changeset} ->
+                  conn
+                  |> put_status(:bad_request)
+                  |> json(%{error: "failed to delete data of problem"})
+              end
+          end
+      end
+    else
+      _ ->
+        conn
+        |> put_status(:bad_request)
+        |> json(%{error: "id must be a positive integer"})
+    end
+  end
+
 end
